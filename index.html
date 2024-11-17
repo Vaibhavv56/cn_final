@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="main-nav container flex">
+            <a href="#" onclick="reload()" class="company-logo">
+                <img src="./assets/logo.png" alt="company logo">
+            </a>
+            <div class="nav-links">
+                <ul class="flex">
+                    <li class="hover-link nav-item" id="ipl" onclick="onNavItemClick('ipl')">IPL</li>
+                    <li class="hover-link nav-item" id="finance" onclick="onNavItemClick('finance')">Finance</li>
+                    <li class="hover-link nav-item" id="politics" onclick="onNavItemClick('politics')">Politics</li>
+                </ul>
+            </div>
+            <div class="search-bar flex">
+                <input id="search-text" type="text" class="news-input" placeholder="e.g. Science">
+                <button id="search-button" class="search-button">Search</button>
+            </div>
+        </div>
+    </nav>
+    
+
+    <main>
+        <div class="cards-container container flex" id="cards-container">
+            
+        </div>
+    </main>
+
+    
+    <div>
+        
+        <h1>hammingcode</h1>
+        <pre>
+            &lt;#include &lt;stdio.h&gt;&gt;
+&lt;#include &lt;math.h&gt;&gt;
+            
+            void calculate_parity_bits(int codeword[]) {
+                int p0 = codeword[0] + codeword[2] + codeword[4];
+                codeword[6] = p0 % 2;
+            
+                int p1 = codeword[0] + codeword[1] + codeword[4];
+                codeword[5] = p1 % 2;
+            
+                int p2 = codeword[0] + codeword[1] + codeword[2];
+                codeword[3] = p2 % 2;
+            }
+            
+            void encode_hamming(int data[], int codeword[]) {
+                for (int i = 0; i < 7; i++) {
+                    codeword[i] = 0;
+                }
+            
+                codeword[0] = data[0];
+                codeword[1] = data[1];
+                codeword[2] = data[2];
+                codeword[4] = data[3];
+            
+                calculate_parity_bits(codeword);
+            }
+            
+            void detect_and_correct_error(int received_code[]) {
+                int p0 = received_code[0] + received_code[2] + received_code[4] + received_code[6];
+                int p1 = received_code[0] + received_code[1] + received_code[4] + received_code[5];
+                int p2 = received_code[0] + received_code[1] + received_code[2] + received_code[3];
+            
+                int s0 = p0 % 2;
+                int s1 = p1 % 2;
+                int s2 = p2 % 2;
+            
+                int error_position = s2 * 4 + s1 * 2 + s0;
+            
+                if (error_position != 0) {
+                    printf("Error detected at position: %d\n", error_position);
+                    if (received_code[7 - error_position] == 0) {
+                        received_code[7 - error_position] = 1;
+                    } else {
+                        received_code[7 - error_position] = 0;
+                    }
+                    printf("Error corrected. The corrected code is: ");
+                } else {
+                    printf("No error detected.\n");
+                }
+            
+                for (int i = 0; i < 7; i++) {
+                    printf("%d", received_code[i]);
+                }
+                printf("\n");
+            }
+            
+            int main() {
+                int data[4];
+                int codeword[7];
+            
+                printf("Enter 4 data bits (0 or 1):\n");
+                for (int i = 0; i < 4; i++) {
+                    printf("%d: ", i);
+                    scanf("%d", &data[i]);
+                }
+            
+                encode_hamming(data, codeword);
+            
+                printf("The Hamming code (7 bits) is: ");
+                for (int i = 0; i < 7; i++) {
+                    printf("%d", codeword[i]);
+                }
+                printf("\n");
+            
+                int received_code[7];
+                printf("Enter the received 7-bit code (with or without error):\n");
+                for (int i = 0; i < 7; i++) {
+                    printf("%d: ", i);
+                    scanf("%d", &received_code[i]);
+                }
+            
+                detect_and_correct_error(received_code);
+            
+                return 0;
+            }
+            </pre>
+        <br>
+        
+        <h1>Socket programming(python)</h1>
+        <h3>server.py</h3>
+        <pre>
+            import socket
+
+# Define the server address and port
+HOST = '127.0.0.1'  # Localhost
+PORT = 8080          # Port to listen on
+
+# Create a socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the address and port
+server_socket.bind((HOST, PORT))
+
+# Listen for incoming connections (max 1 connection)
+server_socket.listen(1)
+print("Server is waiting for a connection...")
+
+# Accept a connection from the client
+client_socket, client_address = server_socket.accept()
+print(f"Connection established with {client_address}")
+
+# Send a "Hello" message to the client
+message = "Hello, Client!"
+client_socket.sendall(message.encode())  # Send encoded message
+
+print(f"Sent message to client: {message}")
+
+# Close the connection
+client_socket.close()
+server_socket.close()
+            
+        </pre>
+        <br>
+        <h3>client.py</h3>
+        <pre>
+            import socket
+
+# Define the server address and port
+HOST = '127.0.0.1'  # Localhost
+PORT = 8080          # Port to connect to
+
+# Create a socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+client_socket.connect((HOST, PORT))
+
+# Receive the message from the server
+message = client_socket.recv(1024).decode()  # Receive and decode the message
+print(f"Received from server: {message}")
+
+# Close the socket
+client_socket.close()
+
+        </pre>
+
+
+        <br>
+
+
+
+        <h1>Socket programming(c language)</h1>
+        <h3>server</h3>
+        <pre>
+                #include +stdio.h+
+                #include +string.h+
+                #include +stdlib.h+
+                #include +unistd.h+
+                #include +arpa/inet.h+
+                                   
+                #define PORT 5000
+                
+                int main() {
+                    int server_fd, new_socket;
+                    struct sockaddr_in address;
+                    int addrlen = sizeof(address);
+                    char *hello = "Hello";
+                
+                    // Create socket file descriptor
+                    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+                        perror("socket failed");
+                        exit(EXIT_FAILURE);
+                    }
+                
+                    // Define server address
+                    address.sin_family = AF_INET;
+                    address.sin_addr.s_addr = INADDR_ANY;
+                    address.sin_port = htons(PORT);
+                
+                    // Bind the socket to the address
+                    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+                        perror("bind failed");
+                        close(server_fd);
+                        exit(EXIT_FAILURE);
+                    }
+                
+                    // Listen for incoming connections
+                    if (listen(server_fd, 3) < 0) {
+                        perror("listen failed");
+                        close(server_fd);
+                        exit(EXIT_FAILURE);
+                    }
+                
+                    printf("Server is listening on port %d\n", PORT);
+                
+                    // Accept a connection
+                    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0) {
+                        perror("accept failed");
+                        close(server_fd);
+                        exit(EXIT_FAILURE);
+                    }
+                
+                    // Send a "Hello" message to the client
+                    send(new_socket, hello, strlen(hello), 0);
+                    printf("Hello message sent\n");
+                
+                    // Close the socket
+                    close(new_socket);
+                    close(server_fd);
+                    return 0;
+                }
+            
+        </pre>
+        <br>
+        <h3>client</h3>
+        <pre>
+            #include +stdio.h+
+                #include +string.h+
+                #include +stdlib.h+
+                #include +unistd.h+
+                #include +arpa/inet.h+
+                
+                #define PORT 5000
+                
+                int main() {
+                    int sock = 0;
+                    struct sockaddr_in serv_addr;
+                    char buffer[1024] = {0};
+                
+                    // Create socket file descriptor
+                    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+                        printf("\n Socket creation error \n");
+                        return -1;
+                    }
+                
+                    // Define server address
+                    serv_addr.sin_family = AF_INET;
+                    serv_addr.sin_port = htons(PORT);
+                
+                    // Convert IPv4 and IPv6 addresses from text to binary form
+                    if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
+                        printf("\nInvalid address/ Address not supported \n");
+                        return -1;
+                    }
+                
+                    // Connect to the server
+                    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+                        printf("\nConnection Failed \n");
+                        return -1;
+                    }
+                
+                    // Read the message from the server
+                    read(sock, buffer, 1024);
+                    printf("Message from server: %s\n", buffer);
+                
+                    // Close the socket
+                    close(sock);
+                    return 0;
+                }
+        </pre>
+    </div>
+
+
+    <br>
+    <h1>Go back N</h1>
+    <pre>
+        #include +stdio.h+
+            #include +stdlib.h+
+            
+            void simulate_go_back_n(int total_frames, int window_size, int lost_frame) {
+                int sent_frame = 0;  // Current frame being sent
+                int ack_frame = 0;   // Last acknowledged frame
+                int retransmit_start = 0; // Frame from where to start retransmission
+            
+                while (ack_frame < total_frames) {
+                    printf("\nSender is sending frames...\n");
+            
+                    // Sender sends frames within the window size limit
+                    for (int i = 0; i < window_size && sent_frame < total_frames; i++) {
+                        if (sent_frame == lost_frame) {
+                            printf("Frame %d is lost! Go-Back-N ARQ triggered!\n", sent_frame);
+                            retransmit_start = lost_frame; // Set retransmission start point
+                            break; // Stop sending further frames after losing the frame
+                        }
+                        printf("Frame %d sent.\n", sent_frame);
+                        sent_frame++;
+                    }
+            
+                    printf("\nReceiver is receiving and acknowledging frames...\n");
+            
+                    // Receiver processes received frames and acknowledges
+                    for (int i = ack_frame; i < sent_frame; i++) {
+                        if (i == lost_frame) {
+                            printf("Receiver did not receive Frame %d. Discarding subsequent frames. Waiting for retransmission.\n", i);
+                            sent_frame = retransmit_start; // Go back to the lost frame
+                            break; // Exit loop to allow retransmission from the lost frame
+                        } else {
+                            printf("ACK for Frame %d received.\n", i);
+                            ack_frame++;
+                        }
+                    }
+            
+                    // After retransmission of the lost frame, the receiver continues normally
+                    if (ack_frame == lost_frame) {
+                        lost_frame = -1; // Lost frame has been retransmitted and acknowledged
+                    }
+                }
+            
+                printf("\nAll frames successfully transmitted and acknowledged.\n");
+            }
+            
+            int main() {
+                int m, total_frames, window_size, lost_frame;
+            
+                printf("Go-Back-N Sliding Window Protocol Simulation\n");
+            
+                // Input the value of m first
+                printf("\nEnter the value of m (for sequence numbers 2^m): ");
+                scanf("%d", &m);
+            
+                // Window size calculation (2^m - 1)
+                window_size = (1 << m) - 1; // Window size = 2^m - 1
+            
+                // Input the total number of frames
+                printf("Enter total number of frames: ");
+                scanf("%d", &total_frames);
+            
+                // Input the frame to be lost
+                printf("Enter the frame number to be lost: ");
+                scanf("%d", &lost_frame);
+            
+                if (lost_frame >= total_frames) {
+                    printf("Frame number to be lost exceeds total frames.\n");
+                    return 1;
+                }
+            
+                printf("Window size: %d\n", window_size);
+                printf("Frame %d is set to be lost.\n", lost_frame);
+            
+                // Simulate Go-Back-N
+                simulate_go_back_n(total_frames, window_size, lost_frame);
+            
+                return 0;
+            }
+    </pre>
+
+    <br>
+    <h1>Selective</h1>
+    <pre>
+        #include +stdio.h+
+            #include +stdlib.h+
+            
+            int main() {
+                int total_frames;  // Total number of frames to be sent
+                int *frames;       // Dynamic array to hold the frames
+                int *ack;          // Dynamic array to hold the acknowledgment status for each frame
+                int lost_frame;    // To store the frame number chosen to be lost
+            
+                // Ask the user for the number of frames
+                printf("Enter the total number of frames to be sent: ");
+                scanf("%d", &total_frames);
+            
+                // Allocate memory dynamically for frames and acknowledgment arrays
+                frames = (int *)malloc(total_frames * sizeof(int));
+                ack = (int *)malloc(total_frames * sizeof(int));
+            
+                // Check if memory allocation is successful
+                if (frames == NULL || ack == NULL) {
+                    printf("Memory allocation failed. Exiting program.\n");
+                    return 1;
+                }
+            
+                // Initialize frames and acknowledgment arrays
+                for (int i = 0; i < total_frames; i++) {
+                    frames[i] = i + 1;  // Frame numbers start from 1
+                    ack[i] = 0;         // Initially, no frames are acknowledged
+                }
+            
+                // Ask the user which frame should be "lost"
+                printf("Enter the frame number to be lost (1 to %d): ", total_frames);
+                scanf("%d", &lost_frame);
+            
+                // Validate user input
+                if (lost_frame < 1 || lost_frame > total_frames) {
+                    printf("Invalid frame number. Exiting program.\n");
+                    free(frames);
+                    free(ack);
+                    return 1;
+                }
+            
+                lost_frame -= 1; //
+                printf("Sending frames...\n");
+            
+                // Simulate sending frames and receiving acknowledgments
+                for (int i = 0; i < total_frames; i++) {
+                    if (i == lost_frame) {
+                        printf("Frame %d lost.\n", frames[i]);
+                    } else {
+                        printf("Frame %d sent and acknowledged.\n", frames[i]);
+                        ack[i] = 1;  // Mark frame as acknowledged
+                    }
+                }
+            
+                // Check for lost frames and resend them
+                printf("Resending lost frames...\n");
+                for (int i = 0; i < total_frames; i++) {
+                    if (ack[i] == 0) {
+                        printf("Resending frame %d.\n", frames[i]);
+                        ack[i] = 1;  // After resending, mark frame as acknowledged
+                    }
+                }
+            
+                // Final status
+                printf("All frames have been successfully sent and acknowledged.\n");
+            
+                // Free the dynamically allocated memory
+                free(frames);
+                free(ack);
+            
+                return 0;
+            }
+    </pre>
+
+    <br>
+    <h1>Classification</h1>
+    <pre>
+        #include +stdio.h+
+            #include +string.h+
+            #include +stdlib.h+
+            
+            int find_ip_class(int first_octet) {
+                if (first_octet >= 1 && first_octet <= 126) {
+                    return 'A';  // Class A
+                } else if (first_octet >= 128 && first_octet <= 191) {
+                    return 'B';  // Class B
+                } else if (first_octet >= 192 && first_octet <= 223) {
+                    return 'C';  // Class C
+                } else if (first_octet >= 224 && first_octet <= 239) {
+                    return 'D';  // Class D (Multicast)
+                } else if (first_octet >= 240 && first_octet <= 255) {
+                    return 'E';  // Class E (Reserved)
+                } else {
+                    return 'U';  // Unknown
+                }
+            }
+            
+            char* find_ip_type(int first_octet, int second_octet) {
+                // Check for private IP ranges
+                if (first_octet == 10) {
+                    return "Private";  // Class A private
+                } else if (first_octet == 172 && (second_octet >= 16 && second_octet <= 31)) {
+                    return "Private";  // Class B private
+                } else if (first_octet == 192 && second_octet == 168) {
+                    return "Private";  // Class C private
+                } else {
+                    return "Public";
+                }
+            }
+            
+            int main() {
+                char ip_address[20];
+                int octets[4];
+            
+                // Input the IP address
+                printf("Enter an IP address (e.g., 192.168.1.1): ");
+                scanf("%s", ip_address);
+            
+                // Parse the IP address 0into four octets
+                sscanf(ip_address, "%d.%d.%d.%d", &octets[0], &octets[1], &octets[2], &octets[3]);
+            
+                // Find the class
+                char ip_class = find_ip_class(octets[0]);
+            
+                // Find if it's private or public
+                char *ip_type = find_ip_type(octets[0], octets[1]);
+            
+                // Output the results
+                printf("IP Address: %s\n", ip_address);
+                printf("Class: %c\n", ip_class);
+                printf("Type: %s\n", ip_type);
+            
+                return 0;
+            }
+    </pre>
+
+    <br>
+    <h1>Djikstra</h1>
+    <pre>
+        #include +stdio.h+
+            #include +limits.h+
+            #define V 5 // Number of vertices in the graph
+            
+            // Find the vertex with the minimum distance value
+            int minDistance(int dist[], int sptSet[]) {
+                int min = INT_MAX, min_index;
+            
+                for (int v = 0; v < V; v++)
+                    if (sptSet[v] == 0 && dist[v] <= min)
+                        min = dist[v], min_index = v;
+            
+                return min_index;
+            }
+            
+            // Function to print the shortest path
+            void printPath(int parent[], int j) {
+                // Base case: If j is the source node
+                if (parent[j] == -1)
+                    return;
+            
+                printPath(parent, parent[j]);
+                printf(" -> %d", j);
+            }
+            
+            // Dijkstra's algorithm to find the shortest path
+            void dijkstra(int graph[V][V], int src, int dest) {
+                int dist[V];     
+                int sptSet[V];  
+                int parent[V];   
+                
+                for (int i = 0; i < V; i++) {
+                    dist[i] = INT_MAX;
+                    sptSet[i] = 0;
+                    parent[i] = -1;
+                }
+            
+                dist[src] = 0; // Distance of source vertex from itself is always 0
+            
+                for (int count = 0; count < V - 1; count++) {
+                    int u = minDistance(dist, sptSet); // Pick the minimum distance vertex
+                    sptSet[u] = 1; // Mark the picked vertex as processed
+            
+                    for (int v = 0; v < V; v++) {
+                        if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX 
+                            && dist[u] + graph[u][v] < dist[v]) {
+                            dist[v] = dist[u] + graph[u][v];
+                            parent[v] = u; // Set parent for path tracing
+                        }
+                    }
+                }
+            
+                // Print the shortest distance and path
+                printf("Shortest path from node %d to %d is %d\n", src, dest, dist[dest]);
+                printf("Path: %d", src);
+                printPath(parent, dest);
+                printf("\n");
+            }
+            
+            int main() {
+                int graph[V][V] = {{0, 10, 20, 0, 0},
+                                   {10, 0, 5, 16, 0},
+                                   {20, 5, 0, 2, 30},
+                                   {0, 16, 2, 0, 8},
+                                   {0, 0, 30, 8, 0}};
+                
+                int src, dest;
+                
+                // Take user input for source and destination nodes
+                printf("Enter source node (0-%d): ", V-1);
+                scanf("%d", &src);
+                
+                printf("Enter destination node (0-%d): ", V-1);
+                scanf("%d", &dest);
+                
+                if (src >= 0 && src < V && dest >= 0 && dest < V) {
+                    dijkstra(graph, src, dest);
+                } else {
+                    printf("Invalid input. Please enter nodes between 0 and %d.\n", V-1);
+                }
+            
+                return 0;
+            }
+    </pre>
+
+    <br>
+    <h1>Djikstra(another method)</h1>
+    <pre>
+        #include +stdio.h+
+            #include +stdbool.h+
+            #include +limits.h+
+            
+            int no_vertices;
+            
+            void printGraph(int adj[][no_vertices]) {
+                for (int i = 0; i < no_vertices; i++) {
+                    for (int j = 0; j < no_vertices; j++) {
+                        printf("%d ", adj[i][j]);
+                    }
+                    printf("\n");
+                }
+            }
+            
+            void insertPriorityQueue(int queue[], int distance[], int *size, int vertex) {
+                queue[(*size)++] = vertex;
+            
+                for (int i = *size - 1; i > 0; i--) {
+                    if (distance[queue[i]] > distance[queue[i - 1]]) {
+                        // Swap
+                        int temp = queue[i];
+                        queue[i] = queue[i - 1];
+                        queue[i - 1] = temp;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            
+            int extractMin(int queue[], int *size) {
+                if (*size == 0) return -1; // Queue is empty
+                return queue[--(*size)]; // Remove and return the minimum element
+            }
+            
+            int main() {
+                int s, d, dist;
+            
+                printf("\nEnter the number of vertices: ");
+                scanf("%d", &no_vertices);
+                int adj[no_vertices][no_vertices];
+            
+                for (int i = 0; i < no_vertices; i++) {
+                    for (int j = 0; j < no_vertices; j++) {
+                        adj[i][j] = 0;
+                    }
+                }
+            
+                while (true) {
+                    printf("Enter an edge from node (0 to %d) to node (0 to %d) and its distance (-1 -1 to stop): ", no_vertices - 1, no_vertices - 1);
+                    scanf("%d %d %d", &s, &d, &dist);
+                    if (s == -1 && d == -1) {
+                        break;
+                    }
+                    adj[s][d] = dist;
+                    adj[d][s] = dist;
+                }
+            
+                printGraph(adj);
+            
+                int z;
+                int distance[no_vertices];
+                int visited[no_vertices];
+                int queue[no_vertices];
+                int size = 0; // Size of the priority queue
+            
+                for (int i = 0; i < no_vertices; i++) {
+                    visited[i] = 0;
+                    distance[i] = INT_MAX; // Initialize distances to infinity
+                }
+            
+                printf("\nEnter the source node: ");
+                scanf("%d", &z);
+                distance[z] = 0;
+                insertPriorityQueue(queue, distance, &size, z); // Insert source node into the queue
+            
+                calculation(adj, queue, visited, distance, &size);
+            
+                printf("\nThe value in the distance list:");
+                for (int i = 0; i < no_vertices; i++) {
+                    printf("\nThe distance of the %d th node from the source is: %d", i, distance[i]);
+                }
+            
+                return 0;
+            }
+            
+            void calculation(int adj[][no_vertices], int queue[], int visited[], int distance[], int *size) {
+                while (*size > 0) {
+                    int z = extractMin(queue, size); // Get the node with the minimum distance
+                    visited[z] = 1;
+            
+                    for (int i = 0; i < no_vertices; i++) {
+                        if (adj[z][i] != 0 && visited[i] != 1) {
+                            if (distance[z] + adj[z][i] < distance[i]) {
+                                distance[i] = distance[z] + adj[z][i];
+                                insertPriorityQueue(queue, distance, size, i); // Insert updated distance node
+                            }
+                        }
+                    }
+                    printf("%d ", z); // Print the visited node
+                }
+            }
+            
+    </pre>
+
+    <h1>CRC0</h1>
+    <pre>
+        #include +stdio.h+
+            #include +math.h+
+            
+            void main()
+            {
+                int divident[10];
+                printf("Enter the block code:\n");
+                for(int i=0;i<7;i++)
+                {
+                    scanf("%d",&divident[i]);
+                }
+            
+                int length = 0;
+                int divisor[4];
+                printf("\nEnter the divisor:\n");
+                for(int i=0;i<4;i++)
+                {
+                    scanf("%d",&divisor[i]);
+                }
+            
+                for(int i=7;i<7+3;i++)
+                {
+                    divident[i] = 0;
+                }
+            
+                int divlen = 3;
+                int a[4],x[4];
+                for(int i=0;i<4;i++)
+                {
+                    a[i] = divident[i];
+                }
+            
+                for(int i=4;i<10;i++)
+                {
+                    if(a[0] == 1)
+                    {
+                        for(int i=0;i<4;i++)
+                        {
+                            if(a[i] == divisor[i])
+                            {
+                                x[i] = 0;
+                            }
+                            else
+                            {
+                                x[i] = 1;
+                            }
+                        }
+            
+                        for(int i=0;i<4;i++)
+                        {
+                            a[i] = x[i];
+                        }
+                    }
+                    else if(a[0] == 0){}
+            
+                    else{
+                        printf("kay teri chuklay bhava");
+                    }
+            
+                    for(int i=0;i<3;i++)
+                    {
+                        a[i] = a[i+1];
+                    }
+                    a[3] = divident[i];
+                }
+            
+                if(a[0] == 1)
+                {
+                    for(int i=0;i<4;i++)
+                    {
+                        if(a[i] == divisor[i])
+                        {
+                            x[i] = 0;
+                        }
+                        else
+                        {
+                            x[i] = 1;
+                        }
+                    }
+            
+                    for(int i=0;i<4;i++)
+                    {
+                        a[i] = x[i];
+                    }
+                }
+                else if(a[0] == 0){}
+            
+                printf("\nCRC of given condition is:\n");
+                for(int i=1;i<4;i++)
+                {
+                    printf("%d",a[i]);
+                }
+            }
+            
+            
+    </pre>
+
+    <h1>crc</h1>
+    <pre>
+        #include <stdio.h>
+            #include <string.h>
+            
+            #define MAX 100
+            
+            // Function to perform XOR operation
+            void xorOperation(char dividend[], char divisor[], int n) {
+                for (int i = 0; i < n; i++) {
+                    dividend[i] = (dividend[i] == divisor[i]) ? '0' : '1';
+                }
+            }
+            
+            // Function to perform CRC Division
+            void crcDivision(char data[], char divisor[], char crc[]) {
+                int dataLen = strlen(data);
+                int divisorLen = strlen(divisor);
+            
+                char temp[MAX];
+                strcpy(temp, data);
+            
+                for (int i = 0; i <= dataLen - divisorLen; i++) {
+                    if (temp[i] == '1') {
+                        xorOperation(temp + i, divisor, divisorLen);
+                    }
+                }
+            
+                strcpy(crc, temp + dataLen - divisorLen + 1);
+            }
+            
+            // Function to check for errors
+            int checkForErrors(char crc[]) {
+                for (int i = 0; i < strlen(crc); i++) {
+                    if (crc[i] == '1') {
+                        return 1;  // Error found
+                    }
+                }
+                return 0;  // No error
+            }
+            
+            // Function to flip a bit in a string at a given position
+            void flipBit(char data[], int pos) {
+                data[pos] = (data[pos] == '1') ? '0' : '1';
+            }
+            
+            int main() {
+                char data[MAX], divisor[MAX], crc[MAX];
+                int corrected = 0;
+            
+                printf("Enter the original data: ");
+                scanf("%s", data);
+            
+                printf("Enter the divisor: ");
+                scanf("%s", divisor);
+            
+                int dataLen = strlen(data);
+                int divisorLen = strlen(divisor);
+            
+                // Append zeros to the data
+                for (int i = 0; i < divisorLen - 1; i++) {
+                    data[dataLen + i] = '0';
+                }
+                data[dataLen + divisorLen - 1] = '\0';
+            
+                // Perform CRC division
+                crcDivision(data, divisor, crc);
+            
+                printf("CRC: %s\n", crc);
+            
+                // Simulate receiving data with CRC
+                printf("Enter the received data (with CRC): ");
+                scanf("%s", data);
+            
+                crcDivision(data, divisor, crc);
+            
+                if (checkForErrors(crc)) {
+                    printf("Error detected. Attempting to correct...\n");
+            
+                    for (int i = 0; i < dataLen + divisorLen - 1; i++) {
+                        flipBit(data, i);
+                        crcDivision(data, divisor, crc);
+            
+                        if (!checkForErrors(crc)) {
+                            printf("Error corrected! Corrected data: %s\n", data);
+                            corrected = 1;
+                            break;
+                        }
+            
+                        // Flip the bit back if not corrected
+                        flipBit(data, i);
+                    }
+            
+                    if (!corrected) {
+                        printf("Unable to correct the error.\n");
+                    }
+                } else {
+                    printf("No error detected in the received data.\n");
+                }
+            
+                return 0;
+            }
+    </pre>
+
+    <template id="template-news-card">
+        <div class="card">
+            <div class="card-header">
+                <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+            </div>
+            <div class="card-content">
+                <h3 id="news-title">This is the Title</h3>
+                <h6 class="news-source" id="news-source">End Gadget 26/08/2023</h6>
+                <p class="news-desc" id="news-desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae saepe quis voluptatum quisquam vitae doloremque facilis molestias quae ratione cumque!</p>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html> 
