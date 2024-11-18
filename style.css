@@ -7,15 +7,22 @@
 }
 
 :root {
-    --primary-text-color: #183b56;
-    --secondary-text-color: #577592;
-    --accent-color: #2294ed;
-    --accent-color-dark: #1d69a3;
+    --primary-text-color: #e0e0e0; /* Lighter text color for dark theme */
+    --secondary-text-color: #b0b0b0; /* Lighter secondary text color */
+    --accent-color: #2294ed; /* Accent color remains the same */
+    --accent-color-dark: #1d69a3; /* Darker accent color */
+    --background-color: #121212; /* Dark background color */
+    --card-bg-color: #1f1f1f; /* Darker card background */
+    --card-hover-bg-color: #292929; /* Hover effect for cards */
+    --card-shadow: rgba(255, 255, 255, 0.1); /* Subtle shadow for dark theme */
+    --card-hover-shadow: rgba(255, 255, 255, 0.2); /* Hover shadow effect */
+    --border-color: #333; /* Dark border color */
 }
 
 body {
     font-family: "Poppins", sans-serif;
     color: var(--primary-text-color);
+    background-color: var(--background-color);
 }
 
 p {
@@ -36,13 +43,14 @@ ul {
     display: flex;
     align-items: center;
 }
+
 pre {
-    background-color: #f4f4f4;
+    background-color: #2c2c2c; /* Dark pre background */
     padding: 10px;
     border-radius: 5px;
     font-family: 'Courier New', monospace;
-    white-space: pre-wrap; /* Ensure wrapping of lines in narrow viewports */
-    word-wrap: break-word; /* Break long words if necessary */
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .container {
@@ -52,8 +60,8 @@ pre {
 }
 
 nav {
-    background-color: #f3faff;
-    box-shadow: 0 0 4px #bbd0e2;
+    background-color: #1c1c1c; /* Dark nav background */
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
     position: fixed;
     top: 0;
     z-index: 99;
@@ -100,7 +108,9 @@ nav {
     height: 100%;
     padding-inline: 12px;
     border-radius: 4px;
-    border: 2px solid #bbd0e2;
+    border: 2px solid #333;
+    background-color: #2c2c2c; /* Dark input background */
+    color: var(--primary-text-color);
     font-family: "Roboto", sans-serif;
 }
 
@@ -133,17 +143,17 @@ main {
 .card {
     width: 360px;
     min-height: 400px;
-    box-shadow: 0 0 4px #d4ecff;
+    box-shadow: 0 0 4px var(--card-shadow);
     border-radius: 4px;
     cursor: pointer;
-    background-color: #fff;
+    background-color: var(--card-bg-color);
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 1px 1px 8px #d4ecff;
-    background-color: #f9fdff;
+    box-shadow: 1px 1px 8px var(--card-hover-shadow);
+    background-color: var(--card-hover-bg-color);
     transform: translateY(-2px);
 }
 
